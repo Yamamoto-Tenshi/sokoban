@@ -1,19 +1,30 @@
-import Phaser from 'phaser'
+import Phaser from "phaser"
 
-import HelloWorldScene from './HelloWorldScene'
+import Preloader from "./scenes/Preloader";
+import StartScreen from "./scenes/StartScreen";
+import LevelSelection from "./scenes/LevelSelection"
+import AboutScreen from "./scenes/AboutScreen";
+import Game from "./scenes/Game";
+import HUD from "./scenes/HUD";
+import LevelFinishedScene from "./scenes/LevelFinishedScene";
 
 const config = {
 	type: Phaser.AUTO,
-	parent: 'app',
-	width: 800,
-	height: 600,
+	parent: "game",
+	scale: {
+		mode: Phaser.Scale.NONE,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+		width: 730,
+		height: 625,
+	},
+	backgroundColor: "#31302d",
 	physics: {
-		default: 'arcade',
+		default: "arcade",
 		arcade: {
-			gravity: { y: 200 },
+			gravity: { y: 0 },
 		},
 	},
-	scene: [HelloWorldScene],
+	scene: [Preloader, StartScreen, LevelSelection, AboutScreen, Game, HUD, LevelFinishedScene],
 }
 
 export default new Phaser.Game(config)

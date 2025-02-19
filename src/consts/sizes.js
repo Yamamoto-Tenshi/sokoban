@@ -1,0 +1,7 @@
+const TILE_SIZE = 70;
+const TILE_SIZE_HALF = TILE_SIZE / 2;
+
+export {
+  TILE_SIZE,
+  TILE_SIZE_HALF
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="70" tileheight="70" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" name="sokoban" tilewidth="70" tileheight="70" tilecount="56" columns="8">
+  <image source="../kanamiSprite2.png" width="560" height="490"/>
+ </tileset>
+ <layer id="1" name="level" width="8" height="8">
+  <data encoding="csv">
+47,47,47,47,47,47,47,47,
+47,30,30,30,30,30,47,47,
+47,30,30,30,30,30,30,47,
+47,30,30,30,30,30,30,47,
+47,30,30,30,47,30,30,47,
+47,47,30,30,30,30,30,47,
+47,30,30,30,30,30,30,47,
+47,47,47,47,47,47,47,47
+</data>
+ </layer>
+ <layer id="2" name="targets" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,45,0,0,41,0,0,
+0,0,0,0,0,0,0,0,
+0,0,46,0,0,42,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="player" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,8,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="boxes" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,33,0,0,0,0,
+0,0,37,0,0,38,0,0,
+0,0,0,34,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
