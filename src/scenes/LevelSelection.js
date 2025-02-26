@@ -33,8 +33,9 @@ export default class LevelSelection extends Phaser.Scene {
     
     
     this.levelButtons = this.add.group({classType: Phaser.GameObjects.Text});
+    const buttonsToRender = this.levelsCount < 9 ? this.levelsCount : this.levelPerPage;
     
-    for (let i = 1; i <= this.levelPerPage; i++) {
+    for (let i = 1; i <= buttonsToRender; i++) {
       
       const txt = this.levelButtons.create(0, 0, i, 
         {
@@ -63,7 +64,7 @@ export default class LevelSelection extends Phaser.Scene {
     
     this.previousButton = this.add.sprite(205, height - 160, "arrow-button", 1).setScale(0.75);
     
-    this.nextButton = this.add.sprite(width - 205, height - 160, "arrow-button", 0).setScale(0.75);
+    this.nextButton = this.add.sprite(width - 205, height - 160, "arrow-button", 1).setScale(0.75);
     this.nextButton.flipX = true;
     
     this.previousButton.setInteractive({useHandCursor: true})
@@ -78,8 +79,8 @@ export default class LevelSelection extends Phaser.Scene {
       cellWidth: 100,
       cellHeight: 100,
       position: Phaser.Display.Align.CENTER,
-      x: (width / 2) - ((100 * 3) / 2),
-      y: 125
+      x: (width / 2) - ((100 * 3) / 3),
+      y: 155
     });
     
     const backButton = new CustomButton(this, 

@@ -1,4 +1,4 @@
-#Sokoban Game
+# Sokoban Game
 
 A Sokoban Game made with Phaser.
 
