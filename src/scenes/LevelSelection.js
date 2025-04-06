@@ -1,22 +1,19 @@
 import Phaser from "phaser";
-import CustomButton from "../components/button";
+import createButton from "../util/htmlButton";
 import levelManager from "../util/levelManager";
 
 export default class LevelSelection extends Phaser.Scene {
   constructor() {
     super("level-selection");
 
-    this.levelPerPage = 9;
     this.currentIndex = 0;
     this.currentPage = 1;
     this.levelsCount = levelManager.getLevelsCount();
+    this.levelPerPage = this.levelsCount < 9 ? this.levelsCount : 9;
   }
 
   init() {
-    this.levelPerPage = 9;
-    this.currentIndex = 0;
-    this.currentPage = 1;
-    this.levelsCount = levelManager.getLevelsCount();
+    
   }
 
   create() {
@@ -31,81 +28,66 @@ export default class LevelSelection extends Phaser.Scene {
                   {fontSize: "40px", fontFamily: "Segoe UI", color: "#000000", fontStyle: "bold"})
       .setOrigin(0.5, 0);
     
-    
-    this.levelButtons = this.add.group({classType: Phaser.GameObjects.Text});
-    const buttonsToRender = this.levelsCount < 9 ? this.levelsCount : this.levelPerPage;
-    
-    for (let i = 1; i <= buttonsToRender; i++) {
+    const levelButtonsWrapper = document.createElement("div");
+
+    this.levelButtons = document.createElement("div");
+    this.levelButtons.classList.add("level-buttons");
+
+    levelButtonsWrapper.appendChild(this.levelButtons);
       
-      const txt = this.levelButtons.create(0, 0, i, 
-        {
-          color: "#000000", 
-          fontSize: "48px",
-          fontFamily: "Segoe UI",
-          fontStyle: "bold",
-          backgroundColor: "#ececcd",
-          padding: {top: 2, right: 10, bottom: 2, left: 10}
-        }
-      );
-      
-      txt.setData("level", i);
-      
-      txt.setInteractive({useHandCursor: true})
-        .once("pointerup", () => {
-          let level = txt.getData("level");
-          this.startLevel(level);
-        }, this);
+    for (let i = 0; i < this.levelPerPage; i++) {
+      const levelButton = createButton(i+1, ["level-button"]);
+      levelButton.setAttribute("data-level", i+1);
+      levelButton.textContent = i+1;
+      this.levelButtons.appendChild(levelButton);
     }
+      
+    this.add.dom(width / 2, 250, this.levelButtons)
+      .addListener("click")
+      .on("click", e => {
+      if (e.target.classList.contains("level-button")) {
+        this.startLevel(Number(e.target.getAttribute("data-level")))  
+      }
+    })
+
+    this.levelButtons.children[0].focus();
     
     this.pageText = this.add.text(width / 2, height - 160, 
       `${this.currentPage} / ${Math.ceil(this.levelsCount / this.levelPerPage)}`, 
       {fontSize: "24px", fontFamily: "Segoe UI", color: "#000000"}
     ).setOrigin(0.5)
     
-    this.previousButton = this.add.sprite(205, height - 160, "arrow-button", 1).setScale(0.75);
+    this.previousButton = createButton("", ["button--icon", "prev", "button--disabled"]);
     
-    this.nextButton = this.add.sprite(width - 205, height - 160, "arrow-button", 1).setScale(0.75);
-    this.nextButton.flipX = true;
+    this.add.dom(205, height - 160, this.previousButton)
+      .addListener("click")
+      .on("click", this.previousPage.bind(this));
     
-    this.previousButton.setInteractive({useHandCursor: true})
-      .on("pointerup", this.previousPage, this);
+    this.nextButton = createButton("", ["button--icon", "next"]);
+
+    if (this.levelsCount < 10) this.nextButton.classList.add("button--disabled");
     
-    this.nextButton.setInteractive({useHandCursor: true})
-      .on("pointerup", this.nextPage, this);
+    this.add.dom(width - 205, height - 160, this.nextButton)
+      .addListener("click")
+      .on("click", this.nextPage.bind(this));
     
-    Phaser.Actions.GridAlign(this.levelButtons.getChildren(), {
-      width: 3,
-      height: 3,
-      cellWidth: 100,
-      cellHeight: 100,
-      position: Phaser.Display.Align.CENTER,
-      x: (width / 2) - ((100 * 3) / 3),
-      y: 155
-    });
+    const backButton = createButton("go back", ["button--primary"]);
     
-    const backButton = new CustomButton(this, 
-      width / 2, height - 80, 
-      150, 45, 
-      "Go Back", 
-      {fontSize: "24px"}, 
-      this.goBack.bind(this)
-    );
+    this.add.dom((width / 2), height - 80, backButton)
+      .addListener("click")
+      .once("click", this.goBack.bind(this));
   }
 
   renderLevelButtons() {
-    this.levelButtons.children.each(button => {
-      button.visible = false;
-    });
-    
+
     let buttonIndex = 0;
     let levelsToLoad = (this.currentPage * this.levelPerPage) > this.levelsCount ? 
         this.levelsCount : this.currentPage * this.levelPerPage;
     
     for (let i = this.currentIndex; i < levelsToLoad; i++) {
-      const button = this.levelButtons.children.entries[buttonIndex];
-      button.visible = true;  
-      button.text = i+1;
-      button.setData("level", i+1);
+      const button = this.levelButtons.children[buttonIndex]; 
+      button.textContent = `${i+1}`;
+      button.setAttribute("level", i+1);
       buttonIndex++;
     }
     
@@ -130,30 +112,25 @@ export default class LevelSelection extends Phaser.Scene {
 
   toggleArrowButtons() {
     if (this.currentPage >= Math.ceil(this.levelsCount / this.levelPerPage)) {
-      this.nextButton.setFrame(1);
+      this.nextButton.classList.add("button--disabled");
     }
     else {
-      this.nextButton.setFrame(0)
+      this.nextButton.classList.remove("button--disabled");
     }
     
     if (this.currentPage === 1) {
-      this.previousButton.setFrame(1);
+      this.previousButton.classList.add("button--disabled");
     }
     else {
-      this.previousButton.setFrame(0);
+      this.previousButton.classList.remove("button--disabled");
     }
   }
 
   startLevel(level) {
     if (level > this.levelsCount) return;
     
-    this.cameras.main.fadeOut(500, 0, 0, 0);
-    
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-      this.scene.stop("level-selection");
-      this.scene.start("game", {currentLevel: level});
-    });
-    
+    this.scene.stop("level-selection");
+    this.scene.start("game", {currentLevel: level});
   }
 
   goBack() {

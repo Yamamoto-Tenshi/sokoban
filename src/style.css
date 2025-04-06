@@ -8,9 +8,103 @@
 
 body {
   background-color: #555566;
+  font-family: "segoe ui", Helvetica, sans-serif;
 }
 
 .center-x {
   display: flex;
   justify-content: center;
 }
+
+button {
+  cursor: pointer;
+}
+
+.button--primary {
+  --button-bg: linear-gradient(180deg, rgba(239,240,215,1) 15%, rgba(207,207,155,1) 45%);
+  --button-color: #000;
+  --button-border-color: #afac92; /*#a6a682*/;
+  --button-font-size: 1.25rem;
+  
+  padding: 0.25em 1.75em;
+  color: var(--button-color);
+  background-image: var(--button-bg);
+  border-radius: 9999px;
+  border: 2px solid var(--button-border-color);
+  font-size: var(--button-font-size);
+  font-family: inherit;
+  text-transform: uppercase;
+  font-weight: 800;
+  box-shadow: inset 6px 7px 5px rgba(239,240,215,1),
+              inset -2px 0px 5px rgba(239,240,215,1);
+}
+
+.button--primary:disabled {
+  -webkit-filter: brightness(80%);
+  opacity: 0.55;
+  color: #666;
+}
+
+.button--primary:not(:disabled):hover,
+.button--primary:not(:disabled):focus {
+  --button-bg: linear-gradient(180deg, rgba(209,235,240,1) 15%, rgba(120,172,250,1) 45%);
+  --button-border-color: #769db9;
+
+  box-shadow: inset 6px 7px 5px rgba(209,235,240,1),
+              inset -2px 0px 5px rgba(209,235,240,1),
+              0px 0px 1px 3px #dfd92a;
+  outline: 1px solid transparent;
+}
+
+
+.button--icon {
+  width: 70px;
+  height: 70px;
+  border: 1px solid transparent;
+  background-color: transparent;
+}
+
+.prev {
+  background-image: url("../public/assets/arrowButton.png");
+  background-position: 0;
+}
+
+.next {
+  background-image: url("../public/assets/arrowButtonRight.png");
+  background-position: 70px;
+}
+
+.prev.button--disabled {
+  cursor: not-allowed;
+  background-position: 70px;
+}
+
+.next.button--disabled {
+  cursor: not-allowed;
+  background-position: 140px;
+}
+
+.level-buttons {
+  --button-per-row: 3;
+  --button-size: 70px;
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: calc((var(--button-per-row) * var(--button-size)) + 2rem);
+}
+
+.level-button {
+  width: var(--button-size);
+  height: var(--button-size);
+  font-size: 2rem;
+  background-color: #ececcd;
+  border: 1px solid transparent;
+}
+
+.level-button:focus,
+.level-button:hover {
+  background-color: #f7f794;
+}
+
+
+

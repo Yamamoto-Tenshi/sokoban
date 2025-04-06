@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import CustomButton from "../components/button";
+import createButton from "../util/htmlButton";
+
 
 export default class AboutScreen extends Phaser.Scene {
   constructor() {
@@ -19,18 +20,18 @@ in a corner or behind a wall!
 Use the arrow keys to move the character.`;
     
     const aboutText = this.add.text(75, 125, text, 
-      {fontSize: "24px", color: "#000000", fontFamily: "Segoe UI", fontStyle: "bold", lineSpacing: 16}
+      {fontSize: "24px", color: "#000000", fontFamily: "Segoe UI", fontStyle: "bold"}
     );
     
     aboutText.setWordWrapWidth(width - 100);
     
-    const backButton = new CustomButton(this, 
-      125, height - 75, 
-      150, 45, 
-      "Go Back", 
-      {fontSize: "24px"}, 
-      this.goBack.bind(this)
-    );
+    const backButton = createButton("go back", ["button--primary"]);
+    
+    this.add.dom(125, height - 75, backButton)
+      .addListener("click")
+      .once("click", this.goBack.bind(this));
+
+    backButton.focus();
   }
   
   goBack() {

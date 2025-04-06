@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import CustomButton from "../components/button";
+import createButton from "../util/htmlButton";
 import levelManager from "../util/levelManager";
 
 export default class LevelFinishedScene extends Phaser.Scene {
@@ -26,22 +26,20 @@ export default class LevelFinishedScene extends Phaser.Scene {
                   {fontSize: "24px", fontFamily: "Segoe UI", shadow: {fill: true, blur: 5}})
       .setOrigin(0.5, 0);
     
-    const retryButton = new CustomButton(this, 
-      250, height * 0.7, 
-      200, 60, 
-      "Retry", 
-      {}, 
-      this.retry.bind(this)
-    );
+    const retryButton = createButton("retry", ["button--primary"]);
+    
+    this.add.dom(250, height * 0.7, retryButton)
+      .addListener("click")
+      .once("click", this.retry.bind(this));
     
     if (this.nextLevel <= levelManager.getLevelsCount()) {
-      const nextLevelButton = new CustomButton(this, 
-        width - 250, height * 0.7, 
-        200, 60, 
-        "Next", 
-        {}, 
-        this.playNextLevel.bind(this)
-      );
+      const nextLevelButton = createButton("next", ["button--primary"]);
+    
+      this.add.dom(width - 250, height * 0.7, nextLevelButton)
+        .addListener("click")
+        .once("click", this.playNextLevel.bind(this));
+      
+      nextLevelButton.focus();
     }
     
   }

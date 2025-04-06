@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import CustomButton from "../components/button";
+import createButton from "../util/htmlButton";
 
 export default class StartScreen extends Phaser.Scene {
   constructor() {
@@ -18,21 +18,19 @@ export default class StartScreen extends Phaser.Scene {
     border.lineStyle(5, 0xe2d090);
     border.strokeRect(37, height - 160, width - 75, 120);
     
-    const playButton = new CustomButton(this, 
-      240, height - 100, 
-      200, 60, 
-      "Play", 
-      {}, 
-      this.play.bind(this)
-    );
+    const playButton = createButton("play", ["button--primary"]);
     
-    const aboutButton = new CustomButton(this, 
-      width - 240, height - 100, 
-      200, 60,
-      "About", 
-      {}, 
-      this.about.bind(this)
-    );
+    this.add.dom(240, height -100, playButton)
+      .addListener("click")
+      .once("click", this.play.bind(this));
+    
+    const aboutButton = createButton("about", ["button--primary"]);
+    
+    this.add.dom(width -240, height -100, aboutButton)
+      .addListener("click")
+      .once("click", this.about.bind(this));
+    
+    playButton.focus();
   }
 
   play() {

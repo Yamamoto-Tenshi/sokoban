@@ -11,6 +11,9 @@ import LevelFinishedScene from "./scenes/LevelFinishedScene";
 const config = {
 	type: Phaser.AUTO,
 	parent: "game",
+	dom: {
+		createContainer: true
+	},
 	scale: {
 		mode: Phaser.Scale.NONE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
